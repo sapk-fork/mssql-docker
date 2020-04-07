@@ -22,9 +22,14 @@ if($ACCEPT_EULA -ne "Y" -And $ACCEPT_EULA -ne "y")
     exit 1
 }
 
+# DEBUG
+Get-Service
+
 # start the service
 Write-Verbose "Starting SQL Server"
 start-service MSSQLSERVER
+
+# TODO start SSRS service
 
 if($sa_password -eq "_") {
     if (Test-Path $env:sa_password_path) {
@@ -74,4 +79,6 @@ while ($true)
     Get-EventLog -LogName Application -Source "MSSQL*" -After $lastCheck | Select-Object TimeGenerated, EntryType, Message	 
     $lastCheck = Get-Date 
     Start-Sleep -Seconds 2 
+    #TODO Output SSRS logs
 }
+
